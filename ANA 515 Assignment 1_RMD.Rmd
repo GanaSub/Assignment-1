@@ -1,0 +1,45 @@
+---
+title: "ANA 515 - Assignment 1"
+author: "Ganapathy Subramanian"
+date: 10-23-2021
+output: 
+  html_document:
+  theme:
+    bootswatch: solar
+  
+      
+---
+```{r setup, include = FALSE}
+library(ggplot2)
+library(dplyr)
+library(tidyverse)
+```
+
+```{r, echo = FALSE}
+url <- "https://raw.githubusercontent.com/fivethirtyeight/guns-data/master/full_data.csv"
+gun_deaths <- read.csv(url)
+```
+
+```{r, include = FALSE}
+youth <- gun_deaths %>% 
+  filter(age <= 65)
+```
+
+We have data about `r nrow(gun_deaths)` gun deaths. Only 
+`r nrow(gun_deaths) - nrow(youth)` are of age <= 65. The distribution of the remainder is shown
+below:
+
+
+```{r, echo = FALSE}
+youth %>% 
+  ggplot(aes(age)) + 
+  geom_freqpoly(binwidth = 1)
+```
+
+
+```{r race-dist, echo = FALSE}
+youth %>% 
+  ggplot(aes(fct_infreq(race) %>% fct_rev())) + geom_bar() +
+  coord_flip() + labs(x= "Victim Race")
+```
+
